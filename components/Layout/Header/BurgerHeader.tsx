@@ -8,11 +8,19 @@ const BurgerHeader = () => {
 
   return (
     <>
-      <chakra.header px="5%" py={5} bgColor="white" boxShadow="md" position="sticky" top={0} zIndex={1}>
+      <chakra.header
+        px="5%"
+        py={5}
+        bgColor="white"
+        boxShadow="md"
+        position="sticky"
+        top={0}
+        zIndex={1}
+      >
         <Flex align="center" justify="space-between">
           <Logo />
           <IconButton
-            as={FaHamburger}
+            icon={<FaHamburger />}
             variant="ghost"
             onClick={onToggle}
             aria-label={isOpen ? 'close menu' : 'open menu'}
