@@ -4,7 +4,15 @@ import Logo from './Logo';
 
 const StandardHeader = () => {
   return (
-    <chakra.header px="5%" py={5} bgColor="white" boxShadow="md">
+    <chakra.header
+      px="5%"
+      py={5}
+      bgColor="white"
+      boxShadow="md"
+      position="sticky"
+      top={0}
+      zIndex={1}
+    >
       <Flex align="center">
         <Logo mr={10} />
         <Flex align="center" justify="space-between" flex={1}>

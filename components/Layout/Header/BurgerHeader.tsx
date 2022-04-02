@@ -8,7 +8,7 @@ const BurgerHeader = () => {
 
   return (
     <>
-      <chakra.header px="5%" py={5} bgColor="white" boxShadow="md">
+      <chakra.header px="5%" py={5} bgColor="white" boxShadow="md" position="sticky" top={0} zIndex={1}>
         <Flex align="center" justify="space-between">
           <Logo />
           <IconButton
