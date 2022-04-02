@@ -15,6 +15,11 @@ const theme = extendTheme({
       900: '#005422',
     },
   },
+  semanticTokens: {
+    colors: {
+      secondary: '#6E7191',
+    },
+  },
   fonts: {
     heading: 'Helvetica Neue, Open Sans, sans-serif',
     body: 'Helvetica Neue, Raleway, sans-serif',
