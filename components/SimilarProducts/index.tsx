@@ -1,7 +1,9 @@
 import { FC } from 'react';
-import { Grid, Heading, HStack } from '@chakra-ui/react';
+import { Grid, Heading } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard';
 import { useSimilarProductsQuery } from 'services/product';
+import SimilarProductsSkeleton from './SimilarProductsSkeleton';
+import ErrorAlertWithRetry from 'components/ErrorAlertWithRetry';
 
 export interface SimilarProductsProps {
   tags: string[];
@@ -9,10 +11,24 @@ export interface SimilarProductsProps {
 }
 
 const SimilarProducts: FC<SimilarProductsProps> = ({ tags, currentProductId }) => {
-  const { data: similarProducts, isSuccess } = useSimilarProductsQuery({
+  const {
+    data: similarProducts,
+    isSuccess,
+    isLoading,
+    isError,
+    refetch,
+  } = useSimilarProductsQuery({
     tags,
     currentProductId,
   });
+
+  if (isError) {
+    return <ErrorAlertWithRetry onRetry={refetch} />;
+  }
+
+  if (isLoading) {
+    return <SimilarProductsSkeleton />;
+  }
 
   if (isSuccess) {
     return (
