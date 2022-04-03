@@ -15,7 +15,7 @@ const BurgerHeader = () => {
         boxShadow="md"
         position="sticky"
         top={0}
-        zIndex={1}
+        zIndex={3}
       >
         <Flex align="center" justify="space-between">
           <Logo />

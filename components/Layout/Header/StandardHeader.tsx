@@ -11,7 +11,7 @@ const StandardHeader = () => {
       boxShadow="md"
       position="sticky"
       top={0}
-      zIndex={1}
+      zIndex={3}
     >
       <Flex align="center">
         <Logo mr={10} />
