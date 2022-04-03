@@ -20,7 +20,7 @@ const BurgerHeader = () => {
         </Flex>
       </Box>
       <Collapse in={isOpen} style={{ zIndex: 10 }}>
-        <VStack bg="gray.100" textAlign="center" py={5} spacing={5}>
+        <VStack as="nav" bg="gray.100" textAlign="center" py={5} spacing={5}>
           <HeaderActions onClick={onClose} />
         </VStack>
       </Collapse>

@@ -1,8 +1,8 @@
-import { Box, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
-import FormInput from 'components/FormInput';
 import { trim } from 'lodash-es';
+import { Box } from '@chakra-ui/react';
+import FormInput from 'components/FormInput';
+import TagsList from 'components/TagsList';
 import { ChangeEventHandler, FC, KeyboardEventHandler, useState } from 'react';
-import { bgColorFromString, textColorFromBgColor } from 'utils/color';
 import { formatTagValue } from 'utils/format';
 
 export interface TagsInputProps {
@@ -28,7 +28,7 @@ const TagsInput: FC<TagsInputProps> = ({ values, onChange }) => {
     }
   };
 
-  const onRemoveTag = (valueToRemove: string) => () => {
+  const onRemoveTag = (valueToRemove: string) => {
     onChange(values.filter(value => value !== valueToRemove));
   };
 
@@ -41,24 +41,7 @@ const TagsInput: FC<TagsInputProps> = ({ values, onChange }) => {
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}
       />
-      <Wrap spacing={2} mt={2}>
-        {values.map(value => {
-          const bgColor = bgColorFromString(value);
-
-          return (
-            <Tag
-              key={value}
-              size="lg"
-              borderRadius="full"
-              color={textColorFromBgColor(bgColor)}
-              bgColor={bgColor}
-            >
-              <TagLabel>{value}</TagLabel>
-              <TagCloseButton onClick={onRemoveTag(value)} />
-            </Tag>
-          );
-        })}
-      </Wrap>
+      <TagsList tags={values} onClose={onRemoveTag} />
     </Box>
   );
 };

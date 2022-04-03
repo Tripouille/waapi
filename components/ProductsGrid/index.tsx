@@ -2,15 +2,16 @@ import { FC, useEffect, useRef } from 'react';
 import { Grid, GridProps, Text } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard';
 import ProductCardSkeleton from 'components/ProductCard/ProductCardSkeleton';
-import { PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
-import ServerError from 'components/ServerError';
+import { DEFAULT_PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
+import ErrorAlertWithRetry from 'components/ErrorAlertWithRetry';
 
 export type ProductsGridProps = { searchTerms: string } & GridProps;
 
 const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
   const skeletonRef = useRef<HTMLDivElement>(null);
-  const { data, isFetching, isError, fetchNextPage, hasNextPage, refetch } =
-    useProductsQuery(searchTerms);
+  const { data, isFetching, isError, fetchNextPage, hasNextPage, refetch } = useProductsQuery({
+    searchTerms,
+  });
 
   /** Handle infinite scrolling
    * In case there is more page, the first skeleton will trigger the fetch of the next page */
@@ -33,7 +34,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
     return () => document.removeEventListener('scroll', fetchNextPageIfSkeletonIsVisible);
   }, [skeletonRef, fetchNextPage, isFetching]);
 
-  if (isError) return <ServerError onRetry={refetch} />;
+  if (isError) return <ErrorAlertWithRetry onRetry={refetch} />;
 
   const products = data?.pages.map(page => page.products).flat();
   const shouldDisplaySkeleton = isFetching || hasNextPage;
@@ -47,13 +48,14 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
         </Text>
       )}
       <Grid
+        as="section"
         templateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
         gap="4"
         {...gridProps}
       >
         {products && products.map(product => <ProductCard key={product._id} product={product} />)}
         {shouldDisplaySkeleton &&
-          [...Array(PRODUCTS_PER_QUERY)].map((_, index) => (
+          [...Array(DEFAULT_PRODUCTS_PER_QUERY)].map((_, index) => (
             <ProductCardSkeleton
               key={`ProductCardSkeleton_${index}`}
               ref={index === 0 ? skeletonRef : undefined}
