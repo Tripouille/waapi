@@ -5,11 +5,12 @@ import ProductCardSkeleton from 'components/ProductCard/ProductCardSkeleton';
 import { PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
 import ServerError from 'components/ServerError';
 
-export type ProductsGridProps = GridProps;
+export type ProductsGridProps = { searchTerms: string } & GridProps;
 
-const ProductsGrid: FC<ProductsGridProps> = props => {
+const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
   const skeletonRef = useRef<HTMLDivElement>(null);
-  const { data, isFetching, isError, fetchNextPage, hasNextPage, refetch } = useProductsQuery();
+  const { data, isFetching, isError, fetchNextPage, hasNextPage, refetch } =
+    useProductsQuery(searchTerms);
 
   /** Handle infinite scrolling
    * In case there is more page, the first skeleton will trigger the fetch of the next page */
@@ -41,7 +42,7 @@ const ProductsGrid: FC<ProductsGridProps> = props => {
     <Grid
       templateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
       gap="4"
-      {...props}
+      {...gridProps}
     >
       {products && products.map(product => <ProductCard key={product._id} product={product} />)}
       {shouldDisplaySkeleton &&
