@@ -8,7 +8,7 @@ const BurgerHeader = () => {
 
   return (
     <>
-      <Box px="5%" py={5} bgColor="white" position="sticky" top={0} zIndex={3}>
+      <Box px="5%" py={5} bgColor="white">
         <Flex align="center" justify="space-between">
           <Logo />
           <IconButton
