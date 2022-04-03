@@ -1,5 +1,6 @@
 import { Box, Tag, TagCloseButton, TagLabel, Wrap } from '@chakra-ui/react';
 import FormInput from 'components/FormInput';
+import { trim } from 'lodash-es';
 import { ChangeEventHandler, FC, KeyboardEventHandler, useState } from 'react';
 import { bgColorFromString, textColorFromBgColor } from 'utils/color';
 import { formatTagValue } from 'utils/format';
@@ -17,10 +18,13 @@ const TagsInput: FC<TagsInputProps> = ({ values, onChange }) => {
   };
 
   const handleOnKeyDown: KeyboardEventHandler<HTMLInputElement> = event => {
-    if (inputValue && event.key === 'Enter' && !values.includes(inputValue)) {
+    if (event.key === 'Enter') {
       event.preventDefault();
-      setInputValue('');
-      onChange([...values, inputValue]);
+      const normalizedValue = trim(inputValue);
+      if (normalizedValue && !values.includes(normalizedValue)) {
+        setInputValue('');
+        onChange([...values, normalizedValue]);
+      }
     }
   };
 
