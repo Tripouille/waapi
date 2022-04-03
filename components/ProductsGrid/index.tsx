@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
-import { Grid, GridProps } from '@chakra-ui/react';
+import { Grid, GridProps, Text } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard';
 import ProductCardSkeleton from 'components/ProductCard/ProductCardSkeleton';
 import { PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
@@ -37,22 +37,30 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
 
   const products = data?.pages.map(page => page.products).flat();
   const shouldDisplaySkeleton = isFetching || hasNextPage;
+  const productsQuantity = data?.pages[0].count ?? 0;
 
   return (
-    <Grid
-      templateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
-      gap="4"
-      {...gridProps}
-    >
-      {products && products.map(product => <ProductCard key={product._id} product={product} />)}
-      {shouldDisplaySkeleton &&
-        [...Array(PRODUCTS_PER_QUERY)].map((_, index) => (
-          <ProductCardSkeleton
-            key={`ProductCardSkeleton_${index}`}
-            ref={index === 0 ? skeletonRef : undefined}
-          />
-        ))}
-    </Grid>
+    <>
+      {searchTerms && !isFetching && (
+        <Text color="secondary" fontWeight="semibold" mt={3}>
+          {productsQuantity} search result{productsQuantity > 1 ? 's' : ''}
+        </Text>
+      )}
+      <Grid
+        templateColumns={['1fr', 'repeat(2, 1fr)', 'repeat(3, 1fr)', 'repeat(4, 1fr)']}
+        gap="4"
+        {...gridProps}
+      >
+        {products && products.map(product => <ProductCard key={product._id} product={product} />)}
+        {shouldDisplaySkeleton &&
+          [...Array(PRODUCTS_PER_QUERY)].map((_, index) => (
+            <ProductCardSkeleton
+              key={`ProductCardSkeleton_${index}`}
+              ref={index === 0 ? skeletonRef : undefined}
+            />
+          ))}
+      </Grid>
+    </>
   );
 };
 

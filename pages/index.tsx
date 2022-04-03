@@ -15,7 +15,7 @@ const Home: NextPage = () => {
         </Heading>
         <SearchBar onSearch={setSearchTerms} placeholder="Search a product" />
       </Flex>
-      <ProductsGrid mt={10} searchTerms={searchTerms} />
+      <ProductsGrid mt={['5', '10']} searchTerms={searchTerms} />
     </>
   );
 };
