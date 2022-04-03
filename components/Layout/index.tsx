@@ -6,7 +6,9 @@ const Layout: FC = ({ children }) => {
   return (
     <Box bgColor="#E5E5E5" minH="100vh">
       <Header />
-      <chakra.main px="5%">{children}</chakra.main>
+      <chakra.main px="5%" py={['4', '10']}>
+        {children}
+      </chakra.main>
     </Box>
   );
 };

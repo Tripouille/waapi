@@ -10,7 +10,7 @@ export interface SearchBarProps {
 
 const SearchBar: FC<SearchBarProps> = ({ onSearch, placeholder }) => {
   const [value, setValue] = useState('');
-  const debouncedOnSearch = useDebounce(onSearch, 500);
+  const debouncedOnSearch = useDebounce(onSearch);
   const handleChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
     setValue(value);
     debouncedOnSearch(value);
