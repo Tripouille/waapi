@@ -19,11 +19,18 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch, placeholder }) => {
   };
 
   return (
-    <InputGroup bgColor="white" color="#A0A3BD" borderRadius="md">
+    <InputGroup bgColor="transparent" color="#A0A3BD" borderRadius="md">
       <InputLeftElement pointerEvents="none">
         <FiSearch />
       </InputLeftElement>
-      <Input type="text" placeholder={placeholder} value={value} onChange={handleChange} />
+      <Input
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={handleChange}
+        borderColor="border"
+        borderWidth={1.5}
+      />
     </InputGroup>
   );
 };

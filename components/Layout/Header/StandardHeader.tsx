@@ -4,7 +4,7 @@ import Logo from './Logo';
 
 const StandardHeader = () => {
   return (
-    <Box px="5%" py={5} bgColor="white" position="sticky" top={0} zIndex={3}>
+    <Box px="5%" py={5} bgColor="white">
       <Flex align="center">
         <Logo mr={10} />
         <Flex align="center" justify="space-between" flex={1}>

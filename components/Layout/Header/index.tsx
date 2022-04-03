@@ -7,7 +7,7 @@ const Header = () => {
 
   if (ResponsiveHeader === undefined) return null;
   return (
-    <chakra.header boxShadow="md">
+    <chakra.header boxShadow="md" position="sticky" top={0} zIndex={3}>
       <ResponsiveHeader />
     </chakra.header>
   );

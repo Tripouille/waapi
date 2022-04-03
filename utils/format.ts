@@ -15,3 +15,7 @@ export const smashRegularSpaces = (str: string): string => {
 export const formatSearchValue = (str: string): string => {
   return trimStart(smashRegularSpaces(str));
 };
+
+export const formatTagValue = (str: string): string => {
+  return formatSearchValue(str).toLowerCase();
+};

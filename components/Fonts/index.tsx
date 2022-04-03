@@ -5,7 +5,7 @@ const Fonts = () => (
     styles={`
       @font-face {
         font-family: 'Aquatico';
-        src: url('./fonts/Aquatico.otf'),
+        src: url('/fonts/Aquatico.otf'),
         local('Helvetica Neue'),
         local('sans-serif');
       }

@@ -18,6 +18,8 @@ const theme = extendTheme({
   semanticTokens: {
     colors: {
       secondary: '#6E7191',
+      glass: 'rgba(255, 255, 255, 0.6)',
+      border: '#D6D8E7',
     },
     shadows: {
       card: '0px 10px 40px rgba(0, 0, 0, 0.15);',

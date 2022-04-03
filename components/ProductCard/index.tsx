@@ -13,7 +13,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   return (
     <VStack
       borderRadius="2xl"
-      bgColor="white"
+      bgColor="glass"
       p={3}
       spacing={3}
       minW="full"
@@ -24,10 +24,10 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <Image src={image} alt={name} objectFit="cover" borderRadius="2xl" />
       </AspectRatio>
       <Flex justify="space-between" w="full" align="center" fontSize="lg">
-        <Text noOfLines={1} fontWeight="bold" mr={3}>
+        <Text noOfLines={1} fontWeight="bold" mr={2} flex={3}>
           {name}
         </Text>
-        <Text fontWeight="medium" color="secondary">
+        <Text fontWeight="medium" color="secondary" flex={2} textAlign="right" isTruncated>
           {formatProductPrice(price)}
         </Text>
       </Flex>
