@@ -2,15 +2,16 @@ import { FC, useEffect, useRef } from 'react';
 import { Grid, GridProps, Text } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard';
 import ProductCardSkeleton from 'components/ProductCard/ProductCardSkeleton';
-import { PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
+import { DEFAULT_PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
 import ServerError from 'components/ServerError';
 
 export type ProductsGridProps = { searchTerms: string } & GridProps;
 
 const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
   const skeletonRef = useRef<HTMLDivElement>(null);
-  const { data, isFetching, isError, fetchNextPage, hasNextPage, refetch } =
-    useProductsQuery(searchTerms);
+  const { data, isFetching, isError, fetchNextPage, hasNextPage, refetch } = useProductsQuery({
+    searchTerms,
+  });
 
   /** Handle infinite scrolling
    * In case there is more page, the first skeleton will trigger the fetch of the next page */
@@ -54,7 +55,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
       >
         {products && products.map(product => <ProductCard key={product._id} product={product} />)}
         {shouldDisplaySkeleton &&
-          [...Array(PRODUCTS_PER_QUERY)].map((_, index) => (
+          [...Array(DEFAULT_PRODUCTS_PER_QUERY)].map((_, index) => (
             <ProductCardSkeleton
               key={`ProductCardSkeleton_${index}`}
               ref={index === 0 ? skeletonRef : undefined}

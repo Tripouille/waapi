@@ -4,42 +4,76 @@ import { ProductFormData } from 'components/ProductForm';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 import { TOAST_DURATION } from 'utils/constant';
 import { getMessageFromError } from 'utils/error';
-import { Product, ProductQueryResponse, ProductsQueryResponse } from './types';
+import { Product, ProductQueryResponse, ProductsQueryParams, ProductsQueryResponse } from './types';
 
 export const PRODUCTS_QUERY_KEY = 'products';
 export const BASE_URL = 'https://technical-test-frontend.herokuapp.com/api';
 export enum Endpoints {
   PRODUCTS = 'products',
 }
-export const PRODUCTS_PER_QUERY = 8;
+export const DEFAULT_PRODUCTS_PER_QUERY = 8;
+export const DEFAULT_SIMILAR_PRODUCTS_PER_QUERY = 3;
 
 const productsQuery =
-  (searchTerms: string) =>
+  ({ searchTerms, tags, count = DEFAULT_PRODUCTS_PER_QUERY }: ProductsQueryParams) =>
   async ({ pageParam = 0 }): Promise<ProductsQueryResponse & { nextPage?: number }> => {
-    const start = pageParam * PRODUCTS_PER_QUERY;
-    const params = { start, count: PRODUCTS_PER_QUERY };
+    const start = pageParam * DEFAULT_PRODUCTS_PER_QUERY;
+    const params = { start, count };
+
     if (searchTerms) Object.assign(params, { search: searchTerms });
+    if (tags) Object.assign(params, { tags });
     const { data } = await axios.get<ProductsQueryResponse>(`${BASE_URL}/${Endpoints.PRODUCTS}`, {
       params,
     });
     return {
       ...data,
-      nextPage: start + PRODUCTS_PER_QUERY < data.count ? pageParam + 1 : undefined,
+      nextPage: start + DEFAULT_PRODUCTS_PER_QUERY < data.count ? pageParam + 1 : undefined,
     };
   };
 
-export const useProductsQuery = (searchTerms: string) => {
-  return useInfiniteQuery([PRODUCTS_QUERY_KEY, searchTerms], productsQuery(searchTerms), {
-    getNextPageParam: lastPage => lastPage.nextPage,
-  });
+export const useProductsQuery = ({
+  searchTerms,
+  tags,
+  count = DEFAULT_PRODUCTS_PER_QUERY,
+}: ProductsQueryParams) => {
+  return useInfiniteQuery(
+    [PRODUCTS_QUERY_KEY, searchTerms, tags, count],
+    productsQuery({ searchTerms, tags, count }),
+    {
+      getNextPageParam: lastPage => lastPage.nextPage,
+    },
+  );
 };
 
-const productQuery =
-  (productId: string) =>
-  async (): Promise<Product> => {
-    const { data } = await axios.get<ProductQueryResponse>(`${BASE_URL}/${Endpoints.PRODUCTS}/${productId}`);
-    return data.product;
+/** Always fetch one more product in case the backend returns
+ * the current product, then remove current product if included and
+ * return the required count
+ */
+export const useSimilarProductsQuery = ({
+  searchTerms,
+  tags,
+  count = DEFAULT_SIMILAR_PRODUCTS_PER_QUERY,
+  currentProductId,
+}: ProductsQueryParams & { currentProductId: string }) => {
+  const select = (data: ProductsQueryResponse): ProductsQueryResponse['products'] => {
+    return data.products.filter(product => product._id !== currentProductId).slice(0, 3);
   };
+
+  return useQuery(
+    [PRODUCTS_QUERY_KEY, searchTerms, tags, count + 1],
+    productsQuery({ searchTerms, tags, count: count + 1 }),
+    {
+      select,
+    },
+  );
+};
+
+const productQuery = (productId: string) => async (): Promise<Product> => {
+  const { data } = await axios.get<ProductQueryResponse>(
+    `${BASE_URL}/${Endpoints.PRODUCTS}/${productId}`,
+  );
+  return data.product;
+};
 
 export const useProductQuery = (productId: string) => {
   return useQuery([PRODUCTS_QUERY_KEY, productId], productQuery(productId));
