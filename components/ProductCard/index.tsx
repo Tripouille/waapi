@@ -13,7 +13,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   return (
     <VStack
       borderRadius="2xl"
-      bgColor="white"
+      bgColor="glass"
       p={3}
       spacing={3}
       minW="full"
