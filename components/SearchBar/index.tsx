@@ -28,7 +28,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch, placeholder }) => {
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
-        borderColor="#D6D8E7"
+        borderColor="border"
         borderWidth={1.5}
       />
     </InputGroup>
