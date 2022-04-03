@@ -19,6 +19,9 @@ const theme = extendTheme({
     colors: {
       secondary: '#6E7191',
     },
+    shadows: {
+      card: '0px 10px 40px rgba(0, 0, 0, 0.15);',
+    },
   },
   fonts: {
     heading: 'Helvetica Neue, Open Sans, sans-serif',

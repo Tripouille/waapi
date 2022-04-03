@@ -3,7 +3,16 @@ import { forwardRef } from 'react';
 
 const ProductCardSkeleton = forwardRef<HTMLDivElement>((props, ref) => {
   return (
-    <VStack borderRadius="2xl" bgColor="white" p={3} spacing={3} minW="full" align="left" ref={ref}>
+    <VStack
+      borderRadius="2xl"
+      bgColor="white"
+      p={3}
+      spacing={3}
+      minW="full"
+      align="left"
+      boxShadow="card"
+      ref={ref}
+    >
       <AspectRatio w="full" ratio={16 / 9}>
         <Skeleton borderRadius="2xl" />
       </AspectRatio>
