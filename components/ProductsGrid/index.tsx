@@ -3,7 +3,7 @@ import { Grid, GridProps, Text } from '@chakra-ui/react';
 import ProductCard from 'components/ProductCard';
 import ProductCardSkeleton from 'components/ProductCard/ProductCardSkeleton';
 import { DEFAULT_PRODUCTS_PER_QUERY, useProductsQuery } from 'services/product';
-import ServerError from 'components/ServerError';
+import ErrorAlertWithRetry from 'components/ErrorAlertWithRetry';
 
 export type ProductsGridProps = { searchTerms: string } & GridProps;
 
@@ -34,7 +34,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
     return () => document.removeEventListener('scroll', fetchNextPageIfSkeletonIsVisible);
   }, [skeletonRef, fetchNextPage, isFetching]);
 
-  if (isError) return <ServerError onRetry={refetch} />;
+  if (isError) return <ErrorAlertWithRetry onRetry={refetch} />;
 
   const products = data?.pages.map(page => page.products).flat();
   const shouldDisplaySkeleton = isFetching || hasNextPage;
