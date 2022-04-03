@@ -4,7 +4,7 @@ import HeaderActions from './HeaderActions';
 import Logo from './Logo';
 
 const BurgerHeader = () => {
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <>
@@ -21,7 +21,7 @@ const BurgerHeader = () => {
       </Box>
       <Collapse in={isOpen} style={{ zIndex: 10 }}>
         <VStack bg="gray.100" textAlign="center" py={5} spacing={5}>
-          <HeaderActions />
+          <HeaderActions onClick={onClose} />
         </VStack>
       </Collapse>
     </>
