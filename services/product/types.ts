@@ -11,3 +11,7 @@ export interface ProductsQueryResponse {
   count: number;
   products: Product[];
 }
+
+export interface ProductQueryResponse {
+  product: Product;
+}

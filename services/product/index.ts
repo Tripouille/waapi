@@ -1,16 +1,15 @@
-import { useToast, VStack } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { ProductFormData } from 'components/ProductForm';
-import { useInfiniteQuery, useMutation, useQueryClient } from 'react-query';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
 import { TOAST_DURATION } from 'utils/constant';
 import { getMessageFromError } from 'utils/error';
-import { ProductsQueryResponse } from './types';
+import { Product, ProductQueryResponse, ProductsQueryResponse } from './types';
 
 export const PRODUCTS_QUERY_KEY = 'products';
 export const BASE_URL = 'https://technical-test-frontend.herokuapp.com/api';
 export enum Endpoints {
   PRODUCTS = 'products',
-  CREATE_PRODUCT = 'products',
 }
 export const PRODUCTS_PER_QUERY = 8;
 
@@ -35,8 +34,19 @@ export const useProductsQuery = (searchTerms: string) => {
   });
 };
 
+const productQuery =
+  (productId: string) =>
+  async (): Promise<Product> => {
+    const { data } = await axios.get<ProductQueryResponse>(`${BASE_URL}/${Endpoints.PRODUCTS}/${productId}`);
+    return data.product;
+  };
+
+export const useProductQuery = (productId: string) => {
+  return useQuery([PRODUCTS_QUERY_KEY, productId], productQuery(productId));
+};
+
 const createProductMutation = (productFormData: ProductFormData) =>
-  axios.post(`${BASE_URL}/${Endpoints.CREATE_PRODUCT}`, productFormData);
+  axios.post(`${BASE_URL}/${Endpoints.PRODUCTS}`, productFormData);
 
 export const useCreateProductMutation = () => {
   const toast = useToast();
