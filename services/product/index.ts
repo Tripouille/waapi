@@ -75,7 +75,9 @@ const productQuery = (productId: string) => async (): Promise<Product> => {
 };
 
 export const useProductQuery = (productId: string) => {
-  return useQuery([PRODUCTS_QUERY_KEY, productId], productQuery(productId));
+  return useQuery([PRODUCTS_QUERY_KEY, productId], productQuery(productId), {
+    enabled: !!productId,
+  });
 };
 
 const createProductMutation = (productFormData: ProductFormData) =>

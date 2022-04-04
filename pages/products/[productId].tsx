@@ -6,6 +6,8 @@ const ProductDetailsPage = () => {
     query: { productId },
   } = useRouter();
 
+  if (!productId) return null;
+
   return <ProductDetails productId={productId as string} />;
 };
 
