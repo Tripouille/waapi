@@ -43,7 +43,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
   return (
     <>
       {searchTerms && !isFetching && (
-        <Text color="secondary" fontWeight="semibold" mt={3}>
+        <Text color="secondary" fontWeight="semibold" mt={3} data-cy='search-results-informations'>
           {productsQuantity} search result{productsQuantity > 1 ? 's' : ''}
         </Text>
       )}

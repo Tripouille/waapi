@@ -30,6 +30,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch, placeholder }) => {
         onChange={handleChange}
         borderColor="border"
         borderWidth={1.5}
+        data-cy="search-bar"
       />
     </InputGroup>
   );

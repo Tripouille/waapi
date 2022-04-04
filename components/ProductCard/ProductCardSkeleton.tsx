@@ -12,6 +12,7 @@ const ProductCardSkeleton = forwardRef<HTMLDivElement>((props, ref) => {
       align="left"
       boxShadow="card"
       ref={ref}
+      data-cy="product-card-skeleton"
     >
       <AspectRatio w="full" ratio={16 / 9}>
         <Skeleton borderRadius="2xl" />
