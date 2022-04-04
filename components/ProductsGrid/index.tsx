@@ -43,7 +43,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
   return (
     <>
       {searchTerms && !isFetching && (
-        <Text color="secondary" fontWeight="semibold" mt={3} data-cy='search-results-informations'>
+        <Text color="secondary" fontWeight="semibold" mt={3} data-cy="search-results-informations">
           {productsQuantity} search result{productsQuantity > 1 ? 's' : ''}
         </Text>
       )}
@@ -58,7 +58,7 @@ const ProductsGrid: FC<ProductsGridProps> = ({ searchTerms, ...gridProps }) => {
           [...Array(DEFAULT_PRODUCTS_PER_QUERY)].map((_, index) => (
             <ProductCardSkeleton
               key={`ProductCardSkeleton_${index}`}
-              ref={index === 0 ? skeletonRef : undefined}
+              ref={index === 0 && !isFetching ? skeletonRef : undefined}
             />
           ))}
       </Grid>
