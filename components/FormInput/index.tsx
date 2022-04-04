@@ -10,7 +10,7 @@ import {
 import { FC } from 'react';
 
 export type FormInputProps = FormControlProps &
-  Pick<InputProps, 'type' | 'placeholder' | 'value' | 'onChange' | 'onKeyDown'> & {
+  Pick<InputProps, 'type' | 'placeholder' | 'value' | 'onChange' | 'onKeyDown' | 'step'> & {
     label: InputProps['children'];
     rightAddon?: string;
   };
@@ -23,6 +23,7 @@ const FormInput: FC<FormInputProps> = ({
   value,
   onChange,
   onKeyDown,
+  step,
   ...formControlProps
 }) => {
   return (
@@ -38,6 +39,7 @@ const FormInput: FC<FormInputProps> = ({
           value={value}
           onChange={onChange}
           onKeyDown={onKeyDown}
+          step={step}
         />
         {rightAddon?.length && <InputRightAddon>{rightAddon}</InputRightAddon>}
       </InputGroup>

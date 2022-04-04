@@ -24,7 +24,7 @@ const SearchBar: FC<SearchBarProps> = ({ onSearch, placeholder }) => {
         <FiSearch />
       </InputLeftElement>
       <Input
-        type="text"
+        type="search"
         placeholder={placeholder}
         value={value}
         onChange={handleChange}

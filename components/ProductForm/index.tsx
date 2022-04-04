@@ -108,6 +108,7 @@ const ProductForm: FC<ProductFormProps> = ({
         />
         <FormInput
           type="number"
+          step={0.01}
           label="Prix"
           placeholder="0,00"
           w={['100%', '30%']}
@@ -128,6 +129,7 @@ const ProductForm: FC<ProductFormProps> = ({
       />
       <FormInput
         label="Image"
+        type="url"
         placeholder="Paste URL"
         isRequired
         value={productFormData.image}
