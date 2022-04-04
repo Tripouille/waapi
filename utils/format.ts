@@ -1,4 +1,4 @@
-import { trimStart } from 'lodash-es';
+import { capitalize, trimStart } from 'lodash-es';
 
 export const formatProductPrice = (price: number) =>
   price.toLocaleString(undefined, {
@@ -17,5 +17,5 @@ export const formatSearchValue = (str: string): string => {
 };
 
 export const formatTagValue = (str: string): string => {
-  return formatSearchValue(str).toLowerCase();
+  return capitalize(formatSearchValue(str));
 };
