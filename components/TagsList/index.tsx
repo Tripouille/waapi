@@ -24,6 +24,7 @@ const TagsList: FC<TagsListProps> = ({ tags, onClose, isDisabled = false }) => {
             color={color}
             bgColor={bgColor}
             fontWeight="semibold"
+            as="li"
           >
             <TagLabel>{formatTagValue(tag)}</TagLabel>
             {onClose && (
