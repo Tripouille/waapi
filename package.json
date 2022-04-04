@@ -8,7 +8,8 @@
     "start": "next start --port 3000",
     "lint": "next lint",
     "format:w": "yarn prettier -w '**/*.{ts,tsx,yml,json,md}'",
-    "format:c": "yarn prettier -c '**/*.{ts,tsx,yml,json,md}'"
+    "format:c": "yarn prettier -c '**/*.{ts,tsx,yml,json,md}'",
+    "cypress:open": "yarn start & cypress open"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.8.7",
@@ -31,6 +32,7 @@
     "@types/react-dom": "17.0.14",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
+    "cypress": "^9.5.3",
     "eslint": "^8.12.0",
     "eslint-config-next": "^12.1.4",
     "eslint-config-prettier": "^8.5.0",

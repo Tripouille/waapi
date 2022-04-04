@@ -24,6 +24,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         align="left"
         boxShadow="card"
         _hover={{ bgColor: 'white', outline: '3px darkgray solid' }}
+        data-cy="product-card"
       >
         <AspectRatio w="full" ratio={16 / 9}>
           <Image src={image} alt={name} objectFit="cover" borderRadius="2xl" />
