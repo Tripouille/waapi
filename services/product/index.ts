@@ -1,8 +1,7 @@
-import { useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { ProductFormData } from 'components/ProductForm';
+import useCustomToast from 'hooks/useCustomToast';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query';
-import { TOAST_DURATION } from 'utils/constant';
 import { getMessageFromError } from 'utils/error';
 import { Product, ProductQueryResponse, ProductsQueryParams, ProductsQueryResponse } from './types';
 
@@ -76,23 +75,23 @@ const productQuery = (productId: string) => async (): Promise<Product> => {
 };
 
 export const useProductQuery = (productId: string) => {
-  return useQuery([PRODUCTS_QUERY_KEY, productId], productQuery(productId));
+  return useQuery([PRODUCTS_QUERY_KEY, productId], productQuery(productId), {
+    enabled: !!productId,
+  });
 };
 
 const createProductMutation = (productFormData: ProductFormData) =>
   axios.post(`${BASE_URL}/${Endpoints.PRODUCTS}`, productFormData);
 
 export const useCreateProductMutation = () => {
-  const toast = useToast();
   const queryClient = useQueryClient();
+  const toast = useCustomToast();
+
   const onSuccess = () => {
     queryClient.invalidateQueries(PRODUCTS_QUERY_KEY);
     toast({
-      title: 'Product created.',
+      title: 'Product created',
       status: 'success',
-      duration: TOAST_DURATION,
-      isClosable: true,
-      position: 'bottom-right',
     });
   };
   const onError = (error: unknown) => {
@@ -100,13 +99,40 @@ export const useCreateProductMutation = () => {
       title: 'Oops ...',
       description: getMessageFromError(error),
       status: 'error',
-      duration: TOAST_DURATION,
-      isClosable: true,
-      position: 'bottom-right',
     });
   };
 
   return useMutation(createProductMutation, {
+    onSuccess,
+    onError,
+  });
+};
+
+const updateProductMutation =
+  (productId: string) =>
+  async (productFormData: ProductFormData): Promise<Product> =>
+    axios.put(`${BASE_URL}/${Endpoints.PRODUCTS}/${productId}`, productFormData);
+
+export const useUpdateProductMutation = (productId: string) => {
+  const queryClient = useQueryClient();
+  const toast = useCustomToast();
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries(PRODUCTS_QUERY_KEY);
+    toast({
+      title: 'Product updated',
+      status: 'success',
+    });
+  };
+  const onError = (error: unknown) => {
+    toast({
+      title: 'Oops ...',
+      description: getMessageFromError(error),
+      status: 'error',
+    });
+  };
+
+  return useMutation(updateProductMutation(productId), {
     onSuccess,
     onError,
   });

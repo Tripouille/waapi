@@ -4,6 +4,7 @@ import { Button, Flex, Heading, Icon, Stack, VStack } from '@chakra-ui/react';
 import FormInput from 'components/FormInput';
 import TagsInput from 'components/TagsInput';
 import { Product } from 'services/product/types';
+import { isEqual, pick } from 'lodash-es';
 
 export type ProductFormData = Omit<Product, '_id' | 'price'> & {
   price: string;
@@ -24,11 +25,14 @@ export interface ProductFormProps {
   product?: Product;
   onSubmit: (productFormData: ProductFormData) => void;
   isLoading: boolean;
-  isSuccess: boolean;
+  resetFormAfterSubmit?: boolean;
 }
 
 export const convertProductToProductFormData = (product: Product): ProductFormData => {
-  return { ...product, price: product.price.toString() };
+  return {
+    ...pick(product, ['name', 'description', 'image', 'tags']),
+    price: product.price.toString(),
+  };
 };
 
 const ProductForm: FC<ProductFormProps> = ({
@@ -38,12 +42,11 @@ const ProductForm: FC<ProductFormProps> = ({
   product,
   onSubmit,
   isLoading,
-  isSuccess,
+  resetFormAfterSubmit = false,
 }) => {
   const [productFormData, setProductFormData] = useState<ProductFormData>(
     product ? convertProductToProductFormData(product) : defaultProductFormData,
   );
-
   const onProductFormStringDataChange =
     <P extends keyof ProductFormData>(property: P): ChangeEventHandler<HTMLInputElement> =>
     ({ target: { value } }) => {
@@ -59,10 +62,12 @@ const ProductForm: FC<ProductFormProps> = ({
     onSubmit(productFormData);
   };
 
-  /** Reset form on creation success  */
+  const buttonIsDisabled =
+    product && isEqual(convertProductToProductFormData(product), productFormData);
+
   useEffect(() => {
-    if (isSuccess) setProductFormData(defaultProductFormData);
-  }, [isSuccess]);
+    if (resetFormAfterSubmit) setProductFormData(defaultProductFormData);
+  }, [resetFormAfterSubmit]);
 
   return (
     <VStack
@@ -99,6 +104,7 @@ const ProductForm: FC<ProductFormProps> = ({
           isRequired
           value={productFormData.name}
           onChange={onProductFormStringDataChange('name')}
+          isDisabled={isLoading}
         />
         <FormInput
           type="number"
@@ -109,6 +115,7 @@ const ProductForm: FC<ProductFormProps> = ({
           rightAddon="€"
           value={productFormData.price}
           onChange={onProductFormStringDataChange('price')}
+          isDisabled={isLoading}
         />
       </Stack>
       <FormInput
@@ -117,6 +124,7 @@ const ProductForm: FC<ProductFormProps> = ({
         isRequired
         value={productFormData.description}
         onChange={onProductFormStringDataChange('description')}
+        isDisabled={isLoading}
       />
       <FormInput
         label="Image"
@@ -124,13 +132,15 @@ const ProductForm: FC<ProductFormProps> = ({
         isRequired
         value={productFormData.image}
         onChange={onProductFormStringDataChange('image')}
+        isDisabled={isLoading}
       />
-      <TagsInput values={productFormData.tags} onChange={onTagsChange} />
+      <TagsInput values={productFormData.tags} onChange={onTagsChange} isDisabled={isLoading} />
       <Button
         type="submit"
         colorScheme="success"
         isLoading={isLoading}
         alignSelf={['center', 'start']}
+        isDisabled={buttonIsDisabled}
       >
         {submitLabel}
       </Button>

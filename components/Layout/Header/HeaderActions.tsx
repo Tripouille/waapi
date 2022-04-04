@@ -13,7 +13,7 @@ export interface HeaderActionsProps {
 const HeaderActions: FC<HeaderActionsProps> = ({ onClick }) => {
   return (
     <>
-      <NextLink href={FrontRoutes.HOME} passHref>
+      <NextLink href={FrontRoutes.HOME()} passHref>
         <Flex as="a" align="center" justify="center" onClick={onClick}>
           <Icon as={FaHome} width="20px" height="20px" mr={2} />
           <Text fontWeight="bold" fontSize="xl">
@@ -21,7 +21,7 @@ const HeaderActions: FC<HeaderActionsProps> = ({ onClick }) => {
           </Text>
         </Flex>
       </NextLink>
-      <NextLink href={FrontRoutes.CREATE_PRODUCT} passHref>
+      <NextLink href={FrontRoutes.CREATE_PRODUCT()} passHref>
         <Button as="a" leftIcon={<BsPlusLg />} colorScheme="success" onClick={onClick}>
           Ajouter un produit
         </Button>

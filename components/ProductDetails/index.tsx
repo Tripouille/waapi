@@ -7,6 +7,8 @@ import TagsList from 'components/TagsList';
 import SimilarProducts from 'components/SimilarProducts';
 import ErrorAlertWithRetry from 'components/ErrorAlertWithRetry';
 import ProductDetailsSkeleton from './ProductDetailsSkeleton';
+import { FrontRoutes } from 'utils/routes';
+import NextLink from 'next/link';
 
 export interface ProductDetailsProps {
   productId: string;
@@ -70,9 +72,12 @@ const ProductDetails: FC<ProductDetailsProps> = ({ productId }) => {
               </Heading>
               <Text>{description}</Text>
             </div>
-            <Button colorScheme="success" leftIcon={<TiPencil />}>
-              Modifier
-            </Button>
+            <NextLink href={FrontRoutes.PRODUCT_EDIT(_id)} passHref>
+              <Button as="a" colorScheme="success" leftIcon={<TiPencil />}>
+                Modifier
+              </Button>
+            </NextLink>
+            ;
           </VStack>
         </Flex>
         <SimilarProducts tags={tags} currentProductId={_id} />
