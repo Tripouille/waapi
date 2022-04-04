@@ -14,7 +14,7 @@ const FormInputSkeleton: FC<FormInputSkeletonProps> = ({
 }) => {
   return (
     <VStack align="rigth" w="full" {...containerProps}>
-      <Skeleton h={6} w={36} {...labelProps} />
+      <Skeleton h={6} w={28} {...labelProps} />
       <Skeleton h={10} w="100%" {...contentProps} />
     </VStack>
   );
