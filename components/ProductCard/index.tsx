@@ -13,7 +13,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
   const { name, price, description, image, _id } = product;
 
   return (
-    <NextLink href={`${FrontRoutes.PRODUCT_DETAILS}/${_id}`} passHref>
+    <NextLink href={FrontRoutes.PRODUCT_DETAILS(_id)} passHref>
       <VStack
         as="a"
         borderRadius="2xl"
