@@ -8,9 +8,10 @@ import { formatTagValue } from 'utils/format';
 export interface TagsInputProps {
   values: string[];
   onChange: (values: string[]) => void;
+  isDisabled: boolean;
 }
 
-const TagsInput: FC<TagsInputProps> = ({ values, onChange }) => {
+const TagsInput: FC<TagsInputProps> = ({ values, onChange, isDisabled }) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleOnChange: ChangeEventHandler<HTMLInputElement> = ({ target: { value } }) => {
@@ -40,8 +41,9 @@ const TagsInput: FC<TagsInputProps> = ({ values, onChange }) => {
         value={inputValue}
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}
+        isDisabled={isDisabled}
       />
-      <TagsList tags={values} onClose={onRemoveTag} />
+      <TagsList tags={values} onClose={onRemoveTag} isDisabled={isDisabled} />
     </Box>
   );
 };

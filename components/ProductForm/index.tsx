@@ -1,9 +1,10 @@
-import { ChangeEventHandler, FC, FormEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, FC, FormEventHandler, useEffect, useMemo, useState } from 'react';
 import { IconType } from 'react-icons';
 import { Button, Flex, Heading, Icon, Stack, VStack } from '@chakra-ui/react';
 import FormInput from 'components/FormInput';
 import TagsInput from 'components/TagsInput';
 import { Product } from 'services/product/types';
+import { isEqual, pick } from 'lodash-es';
 
 export type ProductFormData = Omit<Product, '_id' | 'price'> & {
   price: string;
@@ -28,7 +29,10 @@ export interface ProductFormProps {
 }
 
 export const convertProductToProductFormData = (product: Product): ProductFormData => {
-  return { ...product, price: product.price.toString() };
+  return {
+    ...pick(product, ['name', 'description', 'image', 'tags']),
+    price: product.price.toString(),
+  };
 };
 
 const ProductForm: FC<ProductFormProps> = ({
@@ -57,6 +61,9 @@ const ProductForm: FC<ProductFormProps> = ({
     event.preventDefault();
     onSubmit(productFormData);
   };
+
+  const buttonIsDisabled =
+    product && isEqual(convertProductToProductFormData(product), productFormData);
 
   useEffect(() => {
     if (resetFormAfterSubmit) setProductFormData(defaultProductFormData);
@@ -97,6 +104,7 @@ const ProductForm: FC<ProductFormProps> = ({
           isRequired
           value={productFormData.name}
           onChange={onProductFormStringDataChange('name')}
+          isDisabled={isLoading}
         />
         <FormInput
           type="number"
@@ -107,6 +115,7 @@ const ProductForm: FC<ProductFormProps> = ({
           rightAddon="€"
           value={productFormData.price}
           onChange={onProductFormStringDataChange('price')}
+          isDisabled={isLoading}
         />
       </Stack>
       <FormInput
@@ -115,6 +124,7 @@ const ProductForm: FC<ProductFormProps> = ({
         isRequired
         value={productFormData.description}
         onChange={onProductFormStringDataChange('description')}
+        isDisabled={isLoading}
       />
       <FormInput
         label="Image"
@@ -122,13 +132,15 @@ const ProductForm: FC<ProductFormProps> = ({
         isRequired
         value={productFormData.image}
         onChange={onProductFormStringDataChange('image')}
+        isDisabled={isLoading}
       />
-      <TagsInput values={productFormData.tags} onChange={onTagsChange} />
+      <TagsInput values={productFormData.tags} onChange={onTagsChange} isDisabled={isLoading} />
       <Button
         type="submit"
         colorScheme="success"
         isLoading={isLoading}
         alignSelf={['center', 'start']}
+        isDisabled={buttonIsDisabled}
       >
         {submitLabel}
       </Button>

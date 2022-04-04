@@ -5,9 +5,10 @@ import { bgColorFromString, textColorFromBgColor } from 'utils/color';
 export interface TagsListProps {
   tags: string[];
   onClose?: (closedTag: string) => void;
+  isDisabled: boolean;
 }
 
-const TagsList: FC<TagsListProps> = ({ tags, onClose }) => {
+const TagsList: FC<TagsListProps> = ({ tags, onClose, isDisabled }) => {
   return (
     <Wrap spacing={2} mt={2}>
       {tags.map(tag => {
@@ -23,7 +24,14 @@ const TagsList: FC<TagsListProps> = ({ tags, onClose }) => {
             fontWeight="medium"
           >
             <TagLabel>{tag}</TagLabel>
-            {onClose && <TagCloseButton onClick={() => onClose(tag)} />}
+            {onClose && (
+              <TagCloseButton
+                onClick={() => onClose(tag)}
+                isDisabled={isDisabled}
+                color={isDisabled ? bgColor : 'inherit'}
+                pointerEvents={isDisabled ? 'none' : 'inherit'}
+              />
+            )}
           </Tag>
         );
       })}
