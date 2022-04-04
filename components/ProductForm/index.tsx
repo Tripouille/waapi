@@ -24,7 +24,7 @@ export interface ProductFormProps {
   product?: Product;
   onSubmit: (productFormData: ProductFormData) => void;
   isLoading: boolean;
-  isSuccess: boolean;
+  resetFormAfterSubmit?: boolean;
 }
 
 export const convertProductToProductFormData = (product: Product): ProductFormData => {
@@ -38,12 +38,11 @@ const ProductForm: FC<ProductFormProps> = ({
   product,
   onSubmit,
   isLoading,
-  isSuccess,
+  resetFormAfterSubmit = false,
 }) => {
   const [productFormData, setProductFormData] = useState<ProductFormData>(
     product ? convertProductToProductFormData(product) : defaultProductFormData,
   );
-
   const onProductFormStringDataChange =
     <P extends keyof ProductFormData>(property: P): ChangeEventHandler<HTMLInputElement> =>
     ({ target: { value } }) => {
@@ -59,10 +58,9 @@ const ProductForm: FC<ProductFormProps> = ({
     onSubmit(productFormData);
   };
 
-  /** Reset form on creation success  */
   useEffect(() => {
-    if (isSuccess) setProductFormData(defaultProductFormData);
-  }, [isSuccess]);
+    if (resetFormAfterSubmit) setProductFormData(defaultProductFormData);
+  }, [resetFormAfterSubmit]);
 
   return (
     <VStack
