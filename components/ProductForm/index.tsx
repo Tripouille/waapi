@@ -5,6 +5,7 @@ import FormInput from 'components/FormInput';
 import TagsInput from 'components/TagsInput';
 import { Product } from 'services/product/types';
 import { isEqual, pick } from 'lodash-es';
+import FormTextarea from 'components/FormTextarea';
 
 export type ProductFormData = Omit<Product, '_id' | 'price'> & {
   price: string;
@@ -48,7 +49,9 @@ const ProductForm: FC<ProductFormProps> = ({
     product ? convertProductToProductFormData(product) : defaultProductFormData,
   );
   const onProductFormStringDataChange =
-    <P extends keyof ProductFormData>(property: P): ChangeEventHandler<HTMLInputElement> =>
+    <P extends keyof ProductFormData, T extends HTMLInputElement | HTMLTextAreaElement>(
+      property: P,
+    ): ChangeEventHandler<T> =>
     ({ target: { value } }) => {
       setProductFormData(previousState => ({ ...previousState, [property]: value }));
     };
@@ -119,13 +122,14 @@ const ProductForm: FC<ProductFormProps> = ({
           isDisabled={isLoading}
         />
       </Stack>
-      <FormInput
+      <FormTextarea
         label="Description"
         placeholder="Enter the description of your product here."
         isRequired
         value={productFormData.description}
         onChange={onProductFormStringDataChange('description')}
         isDisabled={isLoading}
+        resize="none"
       />
       <FormInput
         label="Image"

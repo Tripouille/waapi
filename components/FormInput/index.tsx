@@ -2,6 +2,7 @@ import {
   FormControl,
   FormControlProps,
   FormLabel,
+  FormLabelProps,
   Input,
   InputGroup,
   InputProps,
@@ -11,7 +12,7 @@ import { FC } from 'react';
 
 export type FormInputProps = FormControlProps &
   Pick<InputProps, 'type' | 'placeholder' | 'value' | 'onChange' | 'onKeyDown' | 'step'> & {
-    label: InputProps['children'];
+    label: FormLabelProps['children'];
     rightAddon?: string;
   };
 
