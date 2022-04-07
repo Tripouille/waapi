@@ -3,6 +3,24 @@ import ProductsGrid from 'components/ProductsGrid';
 import SearchBar from 'components/SearchBar';
 import type { NextPage } from 'next';
 import { useState } from 'react';
+import { dehydrate, QueryClient } from 'react-query';
+import { PRODUCTS_QUERY_KEY, productsQuery, DEFAULT_PRODUCTS_PER_QUERY } from 'services/product';
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchInfiniteQuery(
+    [PRODUCTS_QUERY_KEY, '', null, DEFAULT_PRODUCTS_PER_QUERY],
+    productsQuery({}),
+  );
+
+  /** Stringify workaround => https://github.com/tannerlinsley/react-query/issues/1458#issuecomment-747716357 */
+  return {
+    props: {
+      dehydratedState: JSON.stringify(dehydrate(queryClient)),
+    },
+  };
+}
 
 const Home: NextPage = () => {
   const [searchTerms, setSearchTerms] = useState('');

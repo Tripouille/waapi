@@ -4,19 +4,24 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import theme from 'theme';
 import Fonts from 'components/Fonts';
-import { QueryClient, QueryClientProvider } from 'react-query';
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-      retry: 0,
-    },
-  },
-});
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { useState } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: Infinity,
+            refetchOnWindowFocus: false,
+            retry: 0,
+          },
+        },
+      }),
+  );
+
   return (
     <>
       <Head>
@@ -27,9 +32,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ChakraProvider resetCSS theme={theme}>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools initialIsOpen={false} />
           <Fonts />
           <Layout>
-            <Component {...pageProps} />
+            <Hydrate
+              state={pageProps.dehydratedState ? JSON.parse(pageProps.dehydratedState) : null}
+            >
+              <Component {...pageProps} />
+            </Hydrate>
           </Layout>
         </QueryClientProvider>
       </ChakraProvider>

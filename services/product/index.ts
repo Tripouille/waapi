@@ -13,7 +13,7 @@ export enum Endpoints {
 export const DEFAULT_PRODUCTS_PER_QUERY = 8;
 export const DEFAULT_SIMILAR_PRODUCTS_PER_QUERY = 3;
 
-const productsQuery =
+export const productsQuery =
   ({ searchTerms, tags, count = DEFAULT_PRODUCTS_PER_QUERY }: ProductsQueryParams) =>
   async ({ pageParam = 0 }): Promise<ProductsQueryResponse & { nextPage?: number }> => {
     const start = pageParam * DEFAULT_PRODUCTS_PER_QUERY;

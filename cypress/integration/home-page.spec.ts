@@ -9,8 +9,9 @@ describe('Home page', () => {
     Intercept.Products();
     Visit.home();
 
-    // Should call products endpoint 2 times since skeletons are visible
-    ApiCall.includesParam(Intercept.Alias.PRODUCTS, `start=0&count=${DEFAULT_PRODUCTS_PER_QUERY}`);
+    /** Should call products endpoint 1 time since skeletons are visible,
+     * start should be DEFAULT_PRODUCTS_PER_QUERY since first fetch is SSR
+     */
     ApiCall.includesParam(
       Intercept.Alias.PRODUCTS,
       `start=${DEFAULT_PRODUCTS_PER_QUERY}&count=${DEFAULT_PRODUCTS_PER_QUERY}`,
