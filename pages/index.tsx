@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { dehydrate, QueryClient } from 'react-query';
 import { PRODUCTS_QUERY_KEY, productsQuery, DEFAULT_PRODUCTS_PER_QUERY } from 'services/product';
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchInfiniteQuery(
