@@ -49,15 +49,18 @@ const ProductForm: FC<ProductFormProps> = ({
     product ? convertProductToProductFormData(product) : defaultProductFormData,
   );
   const onProductFormStringDataChange =
-    <P extends keyof ProductFormData, T extends HTMLInputElement | HTMLTextAreaElement>(
+    <
+      P extends keyof Omit<ProductFormData, 'tags'>,
+      T extends HTMLInputElement | HTMLTextAreaElement,
+    >(
       property: P,
     ): ChangeEventHandler<T> =>
     ({ target: { value } }) => {
       setProductFormData(previousState => ({ ...previousState, [property]: value }));
     };
 
-  const onTagsChange = (values: string[]) => {
-    setProductFormData(previousState => ({ ...previousState, tags: values }));
+  const onTagsChange = (tags: string[]) => {
+    setProductFormData(previousState => ({ ...previousState, tags }));
   };
 
   const handleOnSubmit: FormEventHandler<HTMLDivElement> = event => {
